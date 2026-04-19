@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>{song.title} - Metallum 2</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: #eee; }
+        header { background-color: #000; padding: 10px 30px; display: flex; justify-content: space-between; border-bottom: 2px solid #800d0d; }
+        .logo-box a { display: flex; align-items: center; text-decoration: none; color: inherit; }
+        .logo-box img { height: 40px; border-radius: 50%; border: 1px solid #800d0d; }
+
+        main { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .song-card { background: #262626; border-radius: 12px; border: 1px solid #333; overflow: hidden; }
+        .song-header { background: #800d0d; padding: 30px; text-align: center; }
+        .song-header h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; }
+
+        .song-body { padding: 30px; }
+        .detail-row { margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .label { color: #888; text-transform: uppercase; font-size: 0.8em; }
+        .value { font-size: 1.2em; font-weight: bold; margin-top: 5px; }
+        .value a { color: #800d0d; text-decoration: none; }
+
+        .genre-tag {
+            display: inline-block; border: 1px solid #800d0d; color: #800d0d;
+            padding: 4px 12px; border-radius: 15px; margin-right: 5px; font-size: 0.9em;
+        }
+        .back-btn { display: inline-block; margin-top: 20px; color: #888; text-decoration: none; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo-box">
+        <a href="/homepage"><img src="/img/metallum.jpg" alt="Logo"><h2 style="margin: 0; padding-left: 10px;">METALLUM 2</h2></a>
+    </div>
+</header>
+<main>
+    <div class="song-card">
+        <div class="song-header">
+            <h1>{song.title}</h1>
+        </div>
+        <div class="song-body">
+            <div class="detail-row">
+                <div class="label">Band</div>
+                <div class="value"><a href="/band/{song.band.name}">🤘 {song.band.name}</a></div>
+            </div>
+            <div class="detail-row">
+                <div class="label">Durata</div>
+                <div class="value">
+                    {song.durationMinute ?: 0}:{#if song.durationSecond < 10}0{/if}{song.durationSecond}
+                </div>
+            </div>
+            <div class="detail-row">
+                <div class="label">Generi</div>
+                <div class="value">
+                    {#for g in genres}
+                        <span class="genre-tag">{g.genre}</span>
+                    {#else}
+                        <span style="color: #555;">Nessun genere</span>
+                    {/for}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/homepage" class="back-btn">← Torna alla Dashboard</a>
+</main>
+</body>
+</html>
