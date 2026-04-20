@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{band.name} - Metallum 2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #1a1a1a;
+            color: #eee;
+        }
+
+        header {
+            background: #000;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #800d0d;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-box, .logo-box a, .add-btn, .section-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-box { gap: 12px; }
+
+        .logo-box a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-box img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid #800d0d;
+        }
+
+        .back-link, .add-btn {
+            padding: 6px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85em;
+            transition: 0.3s;
+        }
+
+        .back-link {
+            background: #333;
+            color: #fff;
+        }
+
+        .back-link:hover { background: #444; }
+
+        .add-btn {
+            background: #800d0d;
+            color: #fff;
+            padding: 8px 18px;
+            font-weight: bold;
+            gap: 8px;
+        }
+
+        .add-btn:hover {
+            background: #a01010;
+            transform: scale(1.05);
+        }
+
+        .add-btn img {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) invert(1);
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .band-detail-header {
+            background: #222;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #800d0d;
+        }
+
+        .band-detail-header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #800d0d;
+        }
+
+        .band-meta {
+            margin-top: 10px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        section {
+            background: #262626;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            color: #800d0d;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .song-link {
+            color: #eee;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .song-link:hover { color: #800d0d; }
+
+        .genre-pill {
+            display: inline-block;
+            background: #800d0d;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            margin-left: 10px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .genre-pill:hover { background: #a01010; }
+
+        .duration-col {
+            text-align: right;
+            color: #777;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-box">
+        <a href="/homepage">
+            <img src="/img/metallum.jpg" alt="Logo">
+            <h2 style="margin: 0; padding-left: 10px;">METALLUM 2</h2>
+        </a>
+    </div>
+
+    <div class="user-menu">
+        <a href="/homepage" class="back-link">← TORNA ALLA DASHBOARD</a>
+    </div>
+</header>
+
+<main>
+    <div class="band-detail-header">
+        <h1>{band.name}</h1>
+        <div class="band-meta">Provenienza: {band.provenance}</div>
+    </div>
+
+    <section>
+        <div class="section-header">
+            <h2 style="margin: 0;">💿 Canzoni / Discografia</h2>
+
+            <a href="/add-song/{band.name}" class="add-btn">
+                <img src="/img/addIcon.png" alt="+">
+                AGGIUNGI CANZONE
+            </a>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Titolo e Genere</th>
+                <th class="duration-col">Durata</th>
+            </tr>
+            </thead>
+            <tbody>
+            {#for song in songs}
+                <tr>
+                    <td>
+                        <a href="/canzone/{song.title}" class="song-link">{song.title}</a>
+
+                        {#for g in song.genres}
+                            <a href="/genre/{g.genre}" class="genre-pill">{g.genre}</a>
+                        {/for}
+                    </td>
+                    <td class="duration-col">
+                        {song.durationMinute ?: 0}:{#if song.durationSecond < 10}0{/if}{song.durationSecond}
+                    </td>
+                </tr>
+            {#else}
+                <tr>
+                    <td colspan="2" style="padding: 40px; text-align: center; color: #666;">
+                        Nessun brano trovato per questa band. Usa il tasto "+" per iniziare a riempire il database.
+                    </td>
+                </tr>
+            {/for}
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+</body>
+</html>
