@@ -17,7 +17,7 @@ public class Song {
     private Band band;
 
     @Column(name = "title", columnDefinition = "TEXT")
-    private String title; // CAMBIATO: da name a title per coerenza con DB e Qute
+    private String title;
 
     @Column(name = "duration_minute")
     private Integer durationMinute;
@@ -25,7 +25,7 @@ public class Song {
     @Column(name = "duration_second")
     private int durationSecond;
 
-    @ManyToMany(fetch = FetchType.EAGER) // Aggiunto EAGER per evitare LazyInitializationException nel template
+    @ManyToMany
     @JoinTable(
             name = "song_genre",
             joinColumns = @JoinColumn(name = "id_song"),
@@ -36,7 +36,6 @@ public class Song {
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
-    // CORRETTO: Adesso Qute troverà {song.title}
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
