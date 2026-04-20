@@ -2,8 +2,10 @@ package database.web;
 
 import database.persistence.Entity.Band;
 import database.persistence.Entity.Song;
+import database.persistence.Entity.Genre;
 import database.persistence.repository.BandRepository;
 import database.persistence.repository.SongRepository;
+import database.persistence.repository.GenreRepository;
 import database.service.HomepageService;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
@@ -24,10 +26,10 @@ public class AddSongPage {
     @Inject SongRepository songRepository;
     @Inject BandRepository bandRepository;
     @Inject HomepageService homepageService;
+    @Inject GenreRepository genreRepository;
 
     private final Template addSongTemplate;
 
-    // Assicurati che il file si chiami add_song.qute.html
     public AddSongPage(@Location("add.song.qute.html") Template addSongTemplate) {
         this.addSongTemplate = addSongTemplate;
     }
@@ -51,20 +53,24 @@ public class AddSongPage {
                              @FormParam("genreId") String genreName) {
 
         Band band = bandRepository.find("name", bandName).firstResult();
-
         if (band == null) {
             throw new NotFoundException("Band non trovata: " + bandName);
         }
+        Genre selectedGenre = genreRepository.find("genre", genreName).firstResult();
 
         Song song = new Song();
         song.setTitle(title);
         song.setDurationMinute(minutes);
         song.setDurationSecond(seconds);
         song.setBand(band);
+
+        if (selectedGenre != null) {
+            song.getGenres().add(selectedGenre);
+        }
+
         songRepository.persist(song);
 
         String encodedName = URLEncoder.encode(bandName, StandardCharsets.UTF_8).replace("+", "%20");
-
         return Response.seeOther(URI.create("/band/" + encodedName)).build();
     }
 }
