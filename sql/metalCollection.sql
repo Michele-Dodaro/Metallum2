@@ -1,3 +1,8 @@
+DROP TABLE band CASCADE;
+DROP TABLE genre CASCADE;
+DROP TABLE song CASCADE;
+DROP TABLE song_genre CASCADE;
+
 CREATE TABLE "user"(
     id SERIAL,
     username TEXT NOT NULL UNIQUE,
@@ -105,8 +110,4 @@ INSERT INTO song_genre (id_song, id_genre) VALUES
 
 SELECT * FROM "user";
 
-DROP TABLE band CASCADE;
-DROP TABLE genre CASCADE;
-DROP TABLE song CASCADE;
-DROP TABLE song_genre CASCADE;
 
